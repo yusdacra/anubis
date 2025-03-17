@@ -12,7 +12,8 @@ permissions:
 
 jobs:
   build:
-    runs-on: alrest-techarohq
+    #runs-on: alrest-techarohq
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
 
