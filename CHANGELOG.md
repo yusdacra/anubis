@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Images are built using ko instead of `docker buildx build`
+  [#13](https://github.com/TecharoHQ/anubis/pull/13)
+
 ## 1.12.1
 
 - Phrasing in the `<noscript>` warning was replaced from its original placeholder text to
