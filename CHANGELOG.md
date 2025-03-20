@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 1.13.0
+
+- Proof-of-work challenges are drastically sped up [#19](https://github.com/TecharoHQ/anubis/pull/19)
 - Docker images are now built with the timestamp set to the commit timestamp
 - The README now points to TecharoHQ/anubis instead of Xe/x
 - Images are built using ko instead of `docker buildx build`
