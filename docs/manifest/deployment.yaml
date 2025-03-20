@@ -14,6 +14,7 @@ spec:
       containers:
       - name: anubis-docs
         image: ghcr.io/techarohq/anubis/docs:main
+        imagePullPolicy: Always
         resources:
           limits:
             memory: "128Mi"
