@@ -38,7 +38,7 @@ import (
 
 var (
 	bind                = flag.String("bind", ":8923", "TCP port to bind HTTP to")
-	challengeDifficulty = flag.Int("difficulty", 5, "difficulty of the challenge")
+	challengeDifficulty = flag.Int("difficulty", 4, "difficulty of the challenge")
 	metricsBind         = flag.String("metrics-bind", ":9090", "TCP port to bind metrics to")
 	robotsTxt           = flag.Bool("serve-robots-txt", false, "serve a robots.txt file that disallows all robots")
 	policyFname         = flag.String("policy-fname", "", "full path to anubis policy document (defaults to a sensible built-in policy)")
