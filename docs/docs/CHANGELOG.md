@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Don't overflow the image when browser windows are small (eg. on phones)
+  [#27](https://github.com/TecharoHQ/anubis/pull/27)
 - Lower the default difficulty to 4 from 5
 - Don't duplicate work across multiple threads [#36](https://github.com/TecharoHQ/anubis/pull/36)
 - Documentation has been moved to https://anubis.techaro.lol/ with sources in docs/

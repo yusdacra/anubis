@@ -19,7 +19,6 @@ templ base(title string, body templ.Component) {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 65ch;
       margin-left: auto;
       margin-right: auto;
     }
@@ -165,13 +164,13 @@ templ index() {
 	<div class="centered-div">
 		<img
 			id="image"
-			width="256"
+			style="width:100%;max-width:256px;"
 			src={ "/.within.website/x/cmd/anubis/static/img/pensive.webp?cacheBuster=" +
     anubis.Version }
 		/>
 		<img
 			style="display:none;"
-			width="256"
+			style="width:100%;max-width:256px;"
 			src={ "/.within.website/x/cmd/anubis/static/img/happy.webp?cacheBuster=" +
     anubis.Version }
 		/>
@@ -201,7 +200,7 @@ templ errorPage(message string) {
 	<div class="centered-div">
 		<img
 			id="image"
-			width="256"
+			style="width:100%;max-width:256px;"
 			src={ "/.within.website/x/cmd/anubis/static/img/sad.webp?cacheBuster=" + anubis.Version }
 		/>
 		<p>{ message }.</p>

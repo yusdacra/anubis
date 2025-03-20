@@ -28,12 +28,6 @@ main {
   margin: auto;
 }
 
-@media only screen and (max-device-width: 736px) {
-  main {
-    padding: 0;
-  }
-}
-
 ::selection {
   background: #d3869b;
 }
