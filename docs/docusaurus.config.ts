@@ -105,7 +105,7 @@ const config: Config = {
             },
             {
               label: "Installation",
-              to: "/docs/installation",
+              to: "/docs/admin/installation",
             },
           ],
         },

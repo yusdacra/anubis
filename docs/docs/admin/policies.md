@@ -1,8 +1,6 @@
 ---
-sidebar_position: 30
+title: Policy Definitions
 ---
-
-# Policy Definitions
 
 Out of the box, Anubis is pretty heavy-handed. It will aggressively challenge everything that might be a browser (usually indicated by having `Mozilla` in its user agent). However, some bots are smart enough to get past the challenge. Some things that look like bots may actually be fine (IE: RSS readers). Some resources need to be visible no matter what. Some resources and remotes are fine to begin with.
 
