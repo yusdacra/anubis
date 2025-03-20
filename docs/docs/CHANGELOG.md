@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Docker images now explicitly call `docker.io/library/<thing>` to increase compatibility with Podman et. al
+  [#21](https://github.com/TecharoHQ/anubis/pull/21)
 - Don't overflow the image when browser windows are small (eg. on phones)
   [#27](https://github.com/TecharoHQ/anubis/pull/27)
 - Lower the default difficulty to 4 from 5

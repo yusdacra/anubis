@@ -1,4 +1,4 @@
-FROM golang:1.24 AS build
+FROM docker.io/library/golang:1.24 AS build
 ARG BUILDKIT_SBOM_SCAN_CONTEXT=true BUILDKIT_SBOM_SCAN_STAGE=true
 
 WORKDIR /app
@@ -10,7 +10,7 @@ RUN --mount=type=cache,target=/root/.cache \
   VERSION=$(git describe --tags --always --dirty) \
   && go build -o /app/bin/anubis -ldflags="-X github.com/TecharoHQ/anubis.Version=${VERSION}" ./cmd/anubis
 
-FROM debian:bookworm AS runtime
+FROM docker.io/library/debian:bookworm AS runtime
 ARG BUILDKIT_SBOM_SCAN_STAGE=true
 RUN apt-get update \
   && apt-get -y install ca-certificates
