@@ -37,6 +37,13 @@ export default function Home(): ReactNode {
       <HomepageHeader />
       <main>
         <HomepageFeatures />
+
+        <center>
+          <p>
+            This is all placeholder text. It will be fixed. Give me time. I am
+            one person and my project has unexpectedly gone viral.
+          </p>
+        </center>
       </main>
     </Layout>
   );

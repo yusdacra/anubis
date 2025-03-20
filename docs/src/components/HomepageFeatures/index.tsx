@@ -21,7 +21,7 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
-    title: "",
+    title: "Lightweight",
     Svg: require("@site/static/img/undraw_docusaurus_tree.svg").default,
     description: (
       <>
@@ -32,7 +32,7 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
-    title: "Powered by React",
+    title: "Multi-threaded",
     Svg: require("@site/static/img/undraw_docusaurus_react.svg").default,
     description: (
       <>
