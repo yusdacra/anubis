@@ -60,17 +60,17 @@ jobs:
         env:
           PULL_REQUEST_ID: ${{ github.event.number }}
 
-      - name: "Comment about where to test this"
-        uses: thollander/actions-comment-pull-request@v3
-        if: ${{github.event_name == 'pull_request'}}
-        with:
-          message: |
-            You can try this PR out by using the following docker image:
+      # - name: "Comment about where to test this"
+      #   uses: thollander/actions-comment-pull-request@v3
+      #   if: ${{github.event_name == 'pull_request'}}
+      #   with:
+      #     message: |
+      #       You can try this PR out by using the following docker image:
 
-            ```
-            ${{ steps.build.outputs.docker_image }}
-            ```
-          comment-tag: ${{ steps.build.outputs.docker_image }}
+      #       ```
+      #       ${{ steps.build.outputs.docker_image }}
+      #       ```
+      #     comment-tag: ${{ steps.build.outputs.docker_image }}
       
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v2
