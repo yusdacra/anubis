@@ -25,3 +25,7 @@ If you want to try this out, connect to [anubis.techaro.lol](https://anubis.tech
 If you run into any issues running Anubis, please [open an issue](https://github.com/TecharoHQ/anubis/issues/new?template=Blank+issue) and tag it with the Anubis tag. Please include all the information I would need to diagnose your issue.
 
 For live chat, please join the [Patreon](https://patreon.com/cadey) and ask in the Patron discord in the channel `#anubis`.
+
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=TecharoHQ/anubis&type=Date)](https://www.star-history.com/#TecharoHQ/anubis&Date)
