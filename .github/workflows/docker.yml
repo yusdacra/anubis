@@ -60,6 +60,7 @@ jobs:
 
       - name: "Comment about where to test this"
         uses: thollander/actions-comment-pull-request@v3
+        if: ${{github.event_name == 'pull_request'}}
         with:
           message: |
             You can try this PR out by using the following docker image:
