@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Verification page now shows hash rate and a progress bar for completion probability.
 - Added the `--debug-benchmark-js` flag for testing proof-of-work performance during development.
 - Use `TrimSuffix` instead of `TrimRight` on containerbuild
+- Add [LibreJS](https://www.gnu.org/software/librejs/) banner to Anubis JavaScript to allow LibreJS users to run the challenge
 
 ## v1.15.0
 
