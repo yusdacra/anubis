@@ -32,6 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed minor typos
 - Added `zizmor` for GitHub Actions static analysis
 - Fixed most `zizmor` findings
+- Enabled Dependabot
 
 ## v1.15.1
 
