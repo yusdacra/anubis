@@ -10,6 +10,7 @@ require (
 	github.com/prometheus/client_golang v1.21.1
 	github.com/sebest/xff v0.0.0-20210106013422-671bd2870b3a
 	github.com/yl2chen/cidranger v1.0.2
+	golang.org/x/net v0.37.0
 )
 
 require (
@@ -42,7 +43,6 @@ require (
 	github.com/prometheus/procfs v0.15.1 // indirect
 	golang.org/x/exp/typeparams v0.0.0-20231108232855-2478ac86f678 // indirect
 	golang.org/x/mod v0.24.0 // indirect
-	golang.org/x/net v0.37.0 // indirect
 	golang.org/x/sync v0.12.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/tools v0.31.0 // indirect
