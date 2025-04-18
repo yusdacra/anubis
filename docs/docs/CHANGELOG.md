@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improvements to build scripts to make them less independent of the build host
 - Improved the OpenGraph error logging
 - Added FreeBSD rc.d script so can be run as a FreeBSD daemon.
+- Allow requests from the Internet Archive
 - Added example nginx configuration to documentation
 
 ## v1.16.0
