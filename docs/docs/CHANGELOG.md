@@ -21,6 +21,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Allow requests from the Internet Archive
 - Added example nginx configuration to documentation
 - Added example Apache configuration to the documentation [#277](https://github.com/TecharoHQ/anubis/issues/277)
+- Move per-environment configuration details into their own pages
 
 ## v1.16.0
 
