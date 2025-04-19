@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added FreeBSD rc.d script so can be run as a FreeBSD daemon.
 - Allow requests from the Internet Archive
 - Added example nginx configuration to documentation
+- Added example Apache configuration to the documentation [#277](https://github.com/TecharoHQ/anubis/issues/277)
 
 ## v1.16.0
 
