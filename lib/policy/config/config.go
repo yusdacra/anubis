@@ -10,11 +10,12 @@ import (
 var (
 	ErrNoBotRulesDefined                 = errors.New("config: must define at least one (1) bot rule")
 	ErrBotMustHaveName                   = errors.New("config.Bot: must set name")
-	ErrBotMustHaveUserAgentOrPath        = errors.New("config.Bot: must set either user_agent_regex, path_regex, or remote_addresses")
+	ErrBotMustHaveUserAgentOrPath        = errors.New("config.Bot: must set either user_agent_regex, path_regex, headers_regex, or remote_addresses")
 	ErrBotMustHaveUserAgentOrPathNotBoth = errors.New("config.Bot: must set either user_agent_regex, path_regex, and not both")
 	ErrUnknownAction                     = errors.New("config.Bot: unknown action")
 	ErrInvalidUserAgentRegex             = errors.New("config.Bot: invalid user agent regex")
 	ErrInvalidPathRegex                  = errors.New("config.Bot: invalid path regex")
+	ErrInvalidHeadersRegex               = errors.New("config.Bot: invalid headers regex")
 	ErrInvalidCIDR                       = errors.New("config.Bot: invalid CIDR")
 )
 
@@ -37,12 +38,13 @@ const (
 )
 
 type BotConfig struct {
-	Name           string          `json:"name"`
-	UserAgentRegex *string         `json:"user_agent_regex"`
-	PathRegex      *string         `json:"path_regex"`
-	Action         Rule            `json:"action"`
-	RemoteAddr     []string        `json:"remote_addresses"`
-	Challenge      *ChallengeRules `json:"challenge,omitempty"`
+	Name           string            `json:"name"`
+	UserAgentRegex *string           `json:"user_agent_regex"`
+	PathRegex      *string           `json:"path_regex"`
+	HeadersRegex   map[string]string `json:"headers_regex"`
+	Action         Rule              `json:"action"`
+	RemoteAddr     []string          `json:"remote_addresses"`
+	Challenge      *ChallengeRules   `json:"challenge,omitempty"`
 }
 
 func (b BotConfig) Valid() error {
@@ -52,7 +54,7 @@ func (b BotConfig) Valid() error {
 		errs = append(errs, ErrBotMustHaveName)
 	}
 
-	if b.UserAgentRegex == nil && b.PathRegex == nil && len(b.RemoteAddr) == 0 {
+	if b.UserAgentRegex == nil && b.PathRegex == nil && len(b.RemoteAddr) == 0 && len(b.HeadersRegex) == 0 {
 		errs = append(errs, ErrBotMustHaveUserAgentOrPath)
 	}
 
@@ -69,6 +71,18 @@ func (b BotConfig) Valid() error {
 	if b.PathRegex != nil {
 		if _, err := regexp.Compile(*b.PathRegex); err != nil {
 			errs = append(errs, ErrInvalidPathRegex, err)
+		}
+	}
+
+	if len(b.HeadersRegex) > 0 {
+		for name, expr := range b.HeadersRegex {
+			if name == "" {
+				continue
+			}
+
+			if _, err := regexp.Compile(expr); err != nil {
+				errs = append(errs, ErrInvalidHeadersRegex, err)
+			}
 		}
 	}
 
