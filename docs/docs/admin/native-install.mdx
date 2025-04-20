@@ -5,6 +5,8 @@ title: Installing Anubis with a native package
 import Tabs from "@theme/Tabs";
 import TabItem from "@theme/TabItem";
 
+Download the package for your system from [the most recent release on GitHub](https://github.com/TecharoHQ/anubis/releases).
+
 Install the Anubis package using your package manager of choice:
 
 <Tabs>
@@ -129,3 +131,8 @@ curl http://localhost:8240/metrics
 ```
 
 Then set up your reverse proxy (Nginx, Caddy, etc.) to point to the Anubis port. Anubis will then reverse proxy all requests that meet the policies in `/etc/anubis/gitea.botPolicies.json` to the target service.
+
+For more details on particular reverse proxies, see here:
+
+- [Apache](./environments/apache.mdx)
+- [Nginx](./environments/nginx.mdx)
