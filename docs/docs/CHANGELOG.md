@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added example Apache configuration to the documentation [#277](https://github.com/TecharoHQ/anubis/issues/277)
 - Move per-environment configuration details into their own pages
 - Added headers support to bot policy rules
+- Added documentation on how to use Anubis with Traefik in Docker
 
 ## v1.16.0
 
