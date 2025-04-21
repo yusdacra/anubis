@@ -45,6 +45,9 @@ require (
 	golang.org/x/tools v0.31.0 // indirect
 	google.golang.org/protobuf v1.36.5 // indirect
 	honnef.co/go/tools v0.6.1 // indirect
+	k8s.io/apimachinery v0.32.3 // indirect
+	sigs.k8s.io/json v0.0.0-20241010143419-9aa6b5e7a4b3 // indirect
+	sigs.k8s.io/yaml v1.4.0 // indirect
 )
 
 tool (

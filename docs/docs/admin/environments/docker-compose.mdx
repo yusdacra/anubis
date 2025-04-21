@@ -12,13 +12,13 @@ services:
       METRICS_BIND: ":9090"
       SERVE_ROBOTS_TXT: "true"
       TARGET: "http://nginx"
-      POLICY_FNAME: "/data/cfg/botPolicy.json"
+      POLICY_FNAME: "/data/cfg/botPolicy.yaml"
       OG_PASSTHROUGH: "true"
       OG_EXPIRY_TIME: "24h"
     ports:
       - 8080:8080
     volumes:
-      - "./botPolicy.json:/data/cfg/botPolicy.json:ro"
+      - "./botPolicy.yaml:/data/cfg/botPolicy.yaml:ro"
   nginx:
     image: nginx
     volumes:

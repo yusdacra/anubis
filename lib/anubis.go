@@ -90,8 +90,8 @@ func LoadPoliciesOrDefault(fname string, defaultDifficulty int) (*policy.ParsedC
 			return nil, fmt.Errorf("can't parse policy file %s: %w", fname, err)
 		}
 	} else {
-		fname = "(data)/botPolicies.json"
-		fin, err = data.BotPolicies.Open("botPolicies.json")
+		fname = "(data)/botPolicies.yaml"
+		fin, err = data.BotPolicies.Open("botPolicies.yaml")
 		if err != nil {
 			return nil, fmt.Errorf("[unexpected] can't parse builtin policy file %s: %w", fname, err)
 		}

@@ -1,7 +1,6 @@
 package policy
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
@@ -11,6 +10,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/yl2chen/cidranger"
+	"k8s.io/apimachinery/pkg/util/yaml"
 
 	"github.com/TecharoHQ/anubis/lib/policy/config"
 )
@@ -38,8 +38,8 @@ func NewParsedConfig(orig config.Config) *ParsedConfig {
 
 func ParseConfig(fin io.Reader, fname string, defaultDifficulty int) (*ParsedConfig, error) {
 	var c config.Config
-	if err := json.NewDecoder(fin).Decode(&c); err != nil {
-		return nil, fmt.Errorf("can't parse policy config JSON %s: %w", fname, err)
+	if err := yaml.NewYAMLToJSONDecoder(fin).Decode(&c); err != nil {
+		return nil, fmt.Errorf("can't parse policy config YAML %s: %w", fname, err)
 	}
 
 	if err := c.Valid(); err != nil {

@@ -1,11 +1,12 @@
 package config
 
 import (
-	"encoding/json"
 	"errors"
 	"os"
 	"path/filepath"
 	"testing"
+
+	"k8s.io/apimachinery/pkg/util/yaml"
 )
 
 func p[V any](v V) *V { return &v }
@@ -219,7 +220,7 @@ func TestConfigValidKnownGood(t *testing.T) {
 			defer fin.Close()
 
 			var c Config
-			if err := json.NewDecoder(fin).Decode(&c); err != nil {
+			if err := yaml.NewYAMLToJSONDecoder(fin).Decode(&c); err != nil {
 				t.Fatalf("can't decode file: %v", err)
 			}
 
@@ -246,7 +247,7 @@ func TestConfigValidBad(t *testing.T) {
 			defer fin.Close()
 
 			var c Config
-			if err := json.NewDecoder(fin).Decode(&c); err != nil {
+			if err := yaml.NewYAMLToJSONDecoder(fin).Decode(&c); err != nil {
 				t.Fatalf("can't decode file: %v", err)
 			}
 
