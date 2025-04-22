@@ -27,6 +27,7 @@ This page contains a non-exhaustive list with all websites using Anubis.
 - https://dev.haiku-os.org
 - http://code.hackerspace.pl/
 - https://wiki.archlinux.org/
+- https://git.devuan.org/
 
 - <details>
   <summary>The United Nations</summary>
