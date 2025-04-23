@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added documentation on how to use Anubis with Traefik in Docker
 - Improved error handling in some edge cases
 - Disable `generic-bot-catchall` rule because of its high false positive rate in real-world scenarios
+- Moved all CSS inline to the Xess package, changed colors to be CSS variables
 - Set or append to `X-Forwarded-For` header unless the remote connects over a loopback address [#328](https://github.com/TecharoHQ/anubis/issues/328)
 
 ## v1.16.0
