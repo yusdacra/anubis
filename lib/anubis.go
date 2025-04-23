@@ -96,7 +96,12 @@ func LoadPoliciesOrDefault(fname string, defaultDifficulty int) (*policy.ParsedC
 		}
 	}
 
-	defer fin.Close()
+	defer func(fin io.ReadCloser) {
+		err := fin.Close()
+		if err != nil {
+			slog.Error("failed to close policy file", "file", fname, "err", err)
+		}
+	}(fin)
 
 	anubisPolicy, err := policy.ParseConfig(fin, fname, defaultDifficulty)
 
@@ -201,7 +206,7 @@ func (s *Server) MaybeReverseProxy(w http.ResponseWriter, r *http.Request) {
 	r.Header.Add("X-Anubis-Rule", cr.Name)
 	r.Header.Add("X-Anubis-Action", string(cr.Rule))
 	lg = lg.With("check_result", cr)
-	policy.PolicyApplications.WithLabelValues(cr.Name, string(cr.Rule)).Add(1)
+	policy.Applications.WithLabelValues(cr.Name, string(cr.Rule)).Add(1)
 
 	ip := r.Header.Get("X-Real-Ip")
 
@@ -258,21 +263,21 @@ func (s *Server) MaybeReverseProxy(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		lg.Debug("cookie not found", "path", r.URL.Path)
 		s.ClearCookie(w)
-		s.RenderIndex(w, r, cr, rule)
+		s.RenderIndex(w, r, rule)
 		return
 	}
 
 	if err := ckie.Valid(); err != nil {
 		lg.Debug("cookie is invalid", "err", err)
 		s.ClearCookie(w)
-		s.RenderIndex(w, r, cr, rule)
+		s.RenderIndex(w, r, rule)
 		return
 	}
 
 	if time.Now().After(ckie.Expires) && !ckie.Expires.IsZero() {
 		lg.Debug("cookie expired", "path", r.URL.Path)
 		s.ClearCookie(w)
-		s.RenderIndex(w, r, cr, rule)
+		s.RenderIndex(w, r, rule)
 		return
 	}
 
@@ -283,7 +288,7 @@ func (s *Server) MaybeReverseProxy(w http.ResponseWriter, r *http.Request) {
 	if err != nil || !token.Valid {
 		lg.Debug("invalid token", "path", r.URL.Path, "err", err)
 		s.ClearCookie(w)
-		s.RenderIndex(w, r, cr, rule)
+		s.RenderIndex(w, r, rule)
 		return
 	}
 
@@ -298,7 +303,7 @@ func (s *Server) MaybeReverseProxy(w http.ResponseWriter, r *http.Request) {
 	if !ok {
 		lg.Debug("invalid token claims type", "path", r.URL.Path)
 		s.ClearCookie(w)
-		s.RenderIndex(w, r, cr, rule)
+		s.RenderIndex(w, r, rule)
 		return
 	}
 	challenge := s.challengeFor(r, rule.Challenge.Difficulty)
@@ -306,7 +311,7 @@ func (s *Server) MaybeReverseProxy(w http.ResponseWriter, r *http.Request) {
 	if claims["challenge"] != challenge {
 		lg.Debug("invalid challenge", "path", r.URL.Path)
 		s.ClearCookie(w)
-		s.RenderIndex(w, r, cr, rule)
+		s.RenderIndex(w, r, rule)
 		return
 	}
 
@@ -323,7 +328,7 @@ func (s *Server) MaybeReverseProxy(w http.ResponseWriter, r *http.Request) {
 		lg.Debug("invalid response", "path", r.URL.Path)
 		failedValidations.Inc()
 		s.ClearCookie(w)
-		s.RenderIndex(w, r, cr, rule)
+		s.RenderIndex(w, r, rule)
 		return
 	}
 
@@ -332,7 +337,7 @@ func (s *Server) MaybeReverseProxy(w http.ResponseWriter, r *http.Request) {
 	s.next.ServeHTTP(w, r)
 }
 
-func (s *Server) RenderIndex(w http.ResponseWriter, r *http.Request, cr policy.CheckResult, rule *policy.Bot) {
+func (s *Server) RenderIndex(w http.ResponseWriter, r *http.Request, rule *policy.Bot) {
 	lg := slog.With(
 		"user_agent", r.UserAgent(),
 		"accept_language", r.Header.Get("Accept-Language"),
@@ -374,27 +379,37 @@ func (s *Server) RenderBench(w http.ResponseWriter, r *http.Request) {
 func (s *Server) MakeChallenge(w http.ResponseWriter, r *http.Request) {
 	lg := slog.With("user_agent", r.UserAgent(), "accept_language", r.Header.Get("Accept-Language"), "priority", r.Header.Get("Priority"), "x-forwarded-for", r.Header.Get("X-Forwarded-For"), "x-real-ip", r.Header.Get("X-Real-Ip"))
 
+	encoder := json.NewEncoder(w)
 	cr, rule, err := s.check(r)
 	if err != nil {
 		lg.Error("check failed", "err", err)
 		w.WriteHeader(http.StatusInternalServerError)
-		json.NewEncoder(w).Encode(struct {
+		err := encoder.Encode(struct {
 			Error string `json:"error"`
 		}{
 			Error: "Internal Server Error: administrator has misconfigured Anubis. Please contact the administrator and ask them to look for the logs around \"makeChallenge\"",
 		})
+		if err != nil {
+			lg.Error("failed to encode error response", "err", err)
+			w.WriteHeader(http.StatusInternalServerError)
+		}
 		return
 	}
 	lg = lg.With("check_result", cr)
 	challenge := s.challengeFor(r, rule.Challenge.Difficulty)
 
-	json.NewEncoder(w).Encode(struct {
+	err = encoder.Encode(struct {
 		Challenge string                 `json:"challenge"`
 		Rules     *config.ChallengeRules `json:"rules"`
 	}{
 		Challenge: challenge,
 		Rules:     rule.Challenge,
 	})
+	if err != nil {
+		lg.Error("failed to encode challenge", "err", err)
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 	lg.Debug("made challenge", "challenge", challenge, "rules", rule.Challenge, "cr", cr)
 	challengesIssued.Inc()
 }
