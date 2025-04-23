@@ -2,10 +2,12 @@ package config
 
 import (
 	"errors"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"testing"
 
+	"github.com/TecharoHQ/anubis/data"
 	"k8s.io/apimachinery/pkg/util/yaml"
 )
 
@@ -219,13 +221,69 @@ func TestConfigValidKnownGood(t *testing.T) {
 			}
 			defer fin.Close()
 
-			var c Config
-			if err := yaml.NewYAMLToJSONDecoder(fin).Decode(&c); err != nil {
-				t.Fatalf("can't decode file: %v", err)
+			c, err := Load(fin, st.Name())
+			if err != nil {
+				t.Fatal(err)
 			}
 
 			if err := c.Valid(); err != nil {
-				t.Fatal(err)
+				t.Error(err)
+			}
+
+			if len(c.Bots) == 0 {
+				t.Error("wanted more than 0 bots, got zero")
+			}
+		})
+	}
+}
+
+func TestImportStatement(t *testing.T) {
+	type testCase struct {
+		name       string
+		importPath string
+		err        error
+	}
+
+	var tests []testCase
+
+	for _, folderName := range []string{
+		"apps",
+		"bots",
+		"common",
+		"crawlers",
+	} {
+		if err := fs.WalkDir(data.BotPolicies, folderName, func(path string, d fs.DirEntry, err error) error {
+			if err != nil {
+				return err
+			}
+			if d.IsDir() {
+				return nil
+			}
+
+			tests = append(tests, testCase{
+				name:       "(data)/" + path,
+				importPath: "(data)/" + path,
+				err:        nil,
+			})
+
+			return nil
+		}); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			is := &ImportStatement{
+				Import: tt.importPath,
+			}
+
+			if err := is.Valid(); err != nil {
+				t.Errorf("validation error: %v", err)
+			}
+
+			if len(is.Bots) == 0 {
+				t.Error("wanted bot definitions, but got none")
 			}
 		})
 	}
@@ -246,7 +304,7 @@ func TestConfigValidBad(t *testing.T) {
 			}
 			defer fin.Close()
 
-			var c Config
+			var c fileConfig
 			if err := yaml.NewYAMLToJSONDecoder(fin).Decode(&c); err != nil {
 				t.Fatalf("can't decode file: %v", err)
 			}
@@ -257,5 +315,51 @@ func TestConfigValidBad(t *testing.T) {
 				t.Log(err)
 			}
 		})
+	}
+}
+
+func TestBotConfigZero(t *testing.T) {
+	var b BotConfig
+	if !b.Zero() {
+		t.Error("zero value BotConfig is not zero value")
+	}
+
+	b.Name = "hi"
+	if b.Zero() {
+		t.Error("BotConfig with name is zero value")
+	}
+
+	b.UserAgentRegex = p(".*")
+	if b.Zero() {
+		t.Error("BotConfig with user agent regex is zero value")
+	}
+
+	b.PathRegex = p(".*")
+	if b.Zero() {
+		t.Error("BotConfig with path regex is zero value")
+	}
+
+	b.HeadersRegex = map[string]string{"hi": "there"}
+	if b.Zero() {
+		t.Error("BotConfig with headers regex is zero value")
+	}
+
+	b.Action = RuleAllow
+	if b.Zero() {
+		t.Error("BotConfig with action is zero value")
+	}
+
+	b.RemoteAddr = []string{"::/0"}
+	if b.Zero() {
+		t.Error("BotConfig with remote addresses is zero value")
+	}
+
+	b.Challenge = &ChallengeRules{
+		Difficulty: 4,
+		ReportAs:   4,
+		Algorithm:  AlgorithmFast,
+	}
+	if b.Zero() {
+		t.Error("BotConfig with challenge rules is zero value")
 	}
 }

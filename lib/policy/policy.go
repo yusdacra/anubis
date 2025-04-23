@@ -7,7 +7,6 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
-	"k8s.io/apimachinery/pkg/util/yaml"
 
 	"github.com/TecharoHQ/anubis/lib/policy/config"
 )
@@ -20,26 +19,22 @@ var (
 )
 
 type ParsedConfig struct {
-	orig config.Config
+	orig *config.Config
 
 	Bots              []Bot
 	DNSBL             bool
 	DefaultDifficulty int
 }
 
-func NewParsedConfig(orig config.Config) *ParsedConfig {
+func NewParsedConfig(orig *config.Config) *ParsedConfig {
 	return &ParsedConfig{
 		orig: orig,
 	}
 }
 
 func ParseConfig(fin io.Reader, fname string, defaultDifficulty int) (*ParsedConfig, error) {
-	var c config.Config
-	if err := yaml.NewYAMLToJSONDecoder(fin).Decode(&c); err != nil {
-		return nil, fmt.Errorf("can't parse policy config YAML %s: %w", fname, err)
-	}
-
-	if err := c.Valid(); err != nil {
+	c, err := config.Load(fin, fname)
+	if err != nil {
 		return nil, err
 	}
 
