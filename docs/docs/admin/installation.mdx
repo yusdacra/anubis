@@ -92,3 +92,9 @@ To get Anubis filtering your traffic, you need to make sure it's added to your H
 - [Kubernetes](./environments/kubernetes.mdx)
 - [Nginx](./environments/nginx.mdx)
 - [Traefik](./environments/traefik.mdx)
+
+:::note
+
+Anubis loads its assets from `/.within.website/x/xess/` and `/.within.website/x/cmd/anubis`. If you do not reverse proxy these in your server config, Anubis won't work.
+
+:::
