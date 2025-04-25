@@ -28,7 +28,13 @@ For live chat, please join the [Patreon](https://patreon.com/cadey) and ask in t
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=TecharoHQ/anubis&type=Date)](https://www.star-history.com/#TecharoHQ/anubis&Date)
+<a href="https://www.star-history.com/#TecharoHQ/anubis&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=TecharoHQ/anubis&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=TecharoHQ/anubis&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=TecharoHQ/anubis&type=Date" />
+ </picture>
+</a>
 
 ## Packaging Status
 
