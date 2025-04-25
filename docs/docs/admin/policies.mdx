@@ -241,6 +241,6 @@ In case your service needs it for risk calculation reasons, Anubis exposes infor
 | :---------------- | :--------------------------------------------------- | :--------------- |
 | `X-Anubis-Rule`   | The name of the rule that was matched                | `bot/lightpanda` |
 | `X-Anubis-Action` | The action that Anubis took in response to that rule | `CHALLENGE`      |
-| `X-Anubis-Status` | The status and how strict Anubis was in its checks   | `PASS-FULL`      |
+| `X-Anubis-Status` | The status and how strict Anubis was in its checks   | `PASS`           |
 
 Policy rules are matched using [Go's standard library regular expressions package](https://pkg.go.dev/regexp). You can mess around with the syntax at [regex101.com](https://regex101.com), make sure to select the Golang option.

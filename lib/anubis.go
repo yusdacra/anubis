@@ -353,48 +353,7 @@ func (s *Server) maybeReverseProxy(w http.ResponseWriter, r *http.Request, httpS
 		return
 	}
 
-	if randomJitter() {
-		r.Header.Add("X-Anubis-Status", "PASS-BRIEF")
-		lg.Debug("cookie is not enrolled into secondary screening")
-		s.ServeHTTPNext(w, r)
-		return
-	}
-
-	claims, ok := token.Claims.(jwt.MapClaims)
-	if !ok {
-		lg.Debug("invalid token claims type", "path", r.URL.Path)
-		s.ClearCookie(w)
-		s.RenderIndex(w, r, rule, httpStatusOnly)
-		return
-	}
-	challenge := s.challengeFor(r, rule.Challenge.Difficulty)
-
-	if claims["challenge"] != challenge {
-		lg.Debug("invalid challenge", "path", r.URL.Path)
-		s.ClearCookie(w)
-		s.RenderIndex(w, r, rule, httpStatusOnly)
-		return
-	}
-
-	var nonce int
-
-	if v, ok := claims["nonce"].(float64); ok {
-		nonce = int(v)
-	}
-
-	calcString := fmt.Sprintf("%s%d", challenge, nonce)
-	calculated := internal.SHA256sum(calcString)
-
-	if subtle.ConstantTimeCompare([]byte(claims["response"].(string)), []byte(calculated)) != 1 {
-		lg.Debug("invalid response", "path", r.URL.Path)
-		failedValidations.Inc()
-		s.ClearCookie(w)
-		s.RenderIndex(w, r, rule, httpStatusOnly)
-		return
-	}
-
-	slog.Debug("all checks passed")
-	r.Header.Add("X-Anubis-Status", "PASS-FULL")
+	r.Header.Add("X-Anubis-Status", "PASS")
 	s.ServeHTTPNext(w, r)
 }
 
