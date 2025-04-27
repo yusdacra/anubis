@@ -200,6 +200,7 @@ func (s *Server) ServeHTTPNext(w http.ResponseWriter, r *http.Request) {
 			"user_agent", r.UserAgent(),
 			"x-forwarded-for", r.Header.Get("X-Forwarded-For"),
 			"x-real-ip", r.Header.Get("X-Real-Ip"),
+			"host", r.Header.Get("Host"),
 		)
 
 		redir := r.FormValue("redir")
@@ -454,6 +455,7 @@ func (s *Server) PassChallenge(w http.ResponseWriter, r *http.Request) {
 		"priority", r.Header.Get("Priority"),
 		"x-forwarded-for", r.Header.Get("X-Forwarded-For"),
 		"x-real-ip", r.Header.Get("X-Real-Ip"),
+		"host", r.Header.Get("Host"),
 	)
 
 	redir := r.FormValue("redir")
