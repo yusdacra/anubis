@@ -196,6 +196,12 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func (s *Server) ServeHTTPNext(w http.ResponseWriter, r *http.Request) {
 	if s.next == nil {
+		lg := slog.With(
+			"user_agent", r.UserAgent(),
+			"x-forwarded-for", r.Header.Get("X-Forwarded-For"),
+			"x-real-ip", r.Header.Get("X-Real-Ip"),
+		)
+
 		redir := r.FormValue("redir")
 		urlParsed, err := r.URL.Parse(redir)
 		if err != nil {
